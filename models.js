@@ -7,13 +7,17 @@ let movieSchema = mongoose.Schema({
         Name: String,
         Description: String
     },
-        Director:{
+        
+    Director:{
             Name:String,
             Bio:String
         },
-        Actors:[String],
-        ImagePath:String,
-        Featured:Boolean
+        
+    Actors:[String],
+        
+    ImagePath:String,
+        
+    Featured:Boolean
     });
 
     let userSchema = mongoose.Schema({
