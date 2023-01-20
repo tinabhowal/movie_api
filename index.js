@@ -29,8 +29,9 @@ require('./passport');
 
 
 
-mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
-
+ //mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.connect('mongodb+srv://MyFlixAdmin:Atlas5@cluster0.rwvyriz.mongodb.net/myFlixDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 // GET/READ request in mongoose
 app.get('/', (req,res) => {
@@ -135,11 +136,11 @@ app.get('/users', passport.authenticate('jwt', {session:false}), (req,res) => {
 // adding a new user
 app.post('/users', 
 [
-    check('Username', 'Username is reqyuired').isLength({min:5}),
+    check('Username', 'Username is required and minimun length is 5 characters.').isLength({min:5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail(),
-    check('Birthday', 'Birthday should be in the format YYYY-MM-DD').isDate({format:'YYYY/MM/DD'}) 
+    check('Birthday', 'Birthday should be in the format DD/MM/YYYY').isDate({format:'DD/MM/YYYY'}) 
 ],
 (req,res) => {
     let errors = validationResult(req);
