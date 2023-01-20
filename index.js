@@ -235,7 +235,7 @@ app.put('/users/:Username',
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail(),
-    check('Birthday', 'Birthday should be in the format YYYY-MM-DD').isDate({format:'YYYY/MM/DD'}) 
+    check('Birthday', 'Birthday should be in the format DD/MM/YYYY').isDate({format:'DD/MM/YYYY'}) 
 ],
 passport.authenticate('jwt', {session:false}), (req,res) => {
     let errors = validationResult(req);
