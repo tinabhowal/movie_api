@@ -5,9 +5,9 @@ A REST API for an application called “myFlix” that interacts with a database
 
 This is a he server-side component of a “movies” web application. The web application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.
 
-The main purpose of this app is to present how I create a REST API architecture.
+The main purpose of this app is to present how a REST API is created.
 
-This site was built using Heroku GitHub Deploys.
+This site was hosted using Render.
 
 LIVE DEMO
 
@@ -20,7 +20,7 @@ Setup a mongodb database.
 Installation
 Clone the repository:
 
-git clone https://github.com/kal40/movie-api.git
+git clone https://github.com/tinabhowal/movie_api
 cd movie-api
 Create a file and name it .env.development.local for environment variables and add the next content:
 
