@@ -78,17 +78,6 @@ app.get('/movies/genre/:genreName',passport.authenticate('jwt', {session:false})
     });
 });
 
-// get director details
-// app.get('/movies/director/:directorName', (req,res) => {
-//     Movies.findOne({'Director.Name':req.params.directorName})
-//     .then((movie) => {
-//         res.status(201).json(movie.Director);
-//     })
-//     .catch((err) => {
-//         console.error(err);
-//         res.status(500).send('Error:' + err);
-//     });
-// });
 
 // get movie by actor name
 app.get('/movies/actor/:actorName', passport.authenticate('jwt', {session:false}), (req,res) => {
@@ -319,9 +308,6 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-// app.listen(5500, () => {
-//     console.log('Your app is listening on port 5500.');
-//   });
 
 const port = process.env.PORT || 5500;
 app.listen(port, '0.0.0.0',() => {
