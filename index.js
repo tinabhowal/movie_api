@@ -255,7 +255,7 @@ passport.authenticate('jwt', {session:false}), (req,res) => {
                 Username: req.body.Username,
                 Password: hashedPassword,
                 Email: req.params.Email,
-                Birthday: req.params.Birthday
+                // Birthday: req.params.Birthday
             }
            },
            {new:true},
