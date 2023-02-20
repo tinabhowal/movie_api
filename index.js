@@ -234,46 +234,77 @@ app.post('/movies', passport.authenticate('jwt', {session:false}),(req,res) => {
 
 // update a user by username
 
-app.put('/users/:Username',
-[
-    check('Username', 'Username is reqyuired').isLength({min:5}),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email does not appear to be valid').isEmail(),
-    // check('Birthday', 'Birthday should be in the format DD/MM/YYYY').isDate({format:'DD/MM/YYYY'}) 
-],
-passport.authenticate('jwt', {session:false}), (req,res) => {
-    let errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() });
-      }
+// app.put('/users/:Username',
+// [
+//     check('Username', 'Username is reqyuired').isLength({min:5}),
+//     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+//     check('Password', 'Password is required').not().isEmpty(),
+//     check('Email', 'Email does not appear to be valid').isEmail(),
+//     // check('Birthday', 'Birthday should be in the format DD/MM/YYYY').isDate({format:'DD/MM/YYYY'}) 
+// ],
+// passport.authenticate('jwt', {session:false}), (req,res) => {
+//     let errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//         return res.status(422).json({ errors: errors.array() });
+//       }
   
-    let hashedPassword = Users.hashPassword(req.body.Password);
-    Users.findOneAndUpdate({Username:req.params.Username},
-        {$set:
-            {
-                Username: req.body.Username,
-                Password: hashedPassword,
-                Email: req.params.Email,
-                Birthday: req.params.Birthday
-            }
-           },
-           {new:true},
-           (err, updatedUser) => {
-            if(err) {
-                console.error(err);
-                res.status(500).send('Error:' + err);    
-            } else {
-                res.json(updatedUser);
+//     let hashedPassword = Users.hashPassword(req.body.Password);
+//     Users.findOneAndUpdate({Username:req.params.Username},
+//         {$set:
+//             {
+//                 Username: req.body.Username,
+//                 Password: hashedPassword,
+//                 Email: req.params.Email,
+//                 Birthday: req.params.Birthday
+//             }
+//            },
+//            {new:true},
+//            (err, updatedUser) => {
+//             if(err) {
+//                 console.error(err);
+//                 res.status(500).send('Error:' + err);    
+//             } else {
+//                 res.json(updatedUser);
             
-            }
+//             }
 
-            });
+//             });
                       
-});
+// });
 
 
+//Update the user's information
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
+    [
+        check('Username', 'Username is required').isLength({ min: 5 }),
+        check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+        check('Password', 'Password is required').not().isEmpty(),
+        check('Email', 'Email does not appear to be valid').isEmail()
+    ], (req, res) => {
 
+        let errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() });
+        }
+
+        let hashedPassword = Users.hashPassword(req.body.Password);
+        const { Username, Email, Birthday } = req.body;
+
+        Users.findOneAndUpdate({ Username: req.params.Username }, {
+            $set: {
+                Username: Username,
+                Password: hashedPassword,
+                Email: Email,
+                Birthday: Birthday
+            }
+        }, { new: true })
+            .then((updatedUser) => res.status(201).json(updatedUser))
+            .catch((err) => {
+                console.log(err);
+                res.status(500).send(`Error: ${err}`);
+            });
+    });
 
 
 // DELETE requests in Mongoose
