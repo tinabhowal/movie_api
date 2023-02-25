@@ -180,21 +180,33 @@ app.post('/users',
 
 
 // adding a movie to a user's favourite movies
-app.post('/users/:Username/movies/:MovieId', passport.authenticate('jwt', {session:false}),(req,res) => {
-    Users.findOneAndUpdate(
-        {Username: req.params.Username},
-        {$push:{FavouriteMovies:req.params.MovieId},},
-        {new:true},
-        (err,updatedUser) => {
-            if (err) {
-                console.error(error);
-                res.status(500).send('Error' + error);
-            } else {
-                res.json(updatedUser);
-            }
-        }
+// app.post('/users/:Username/movies/:MovieId', passport.authenticate('jwt', {session:false}),(req,res) => {
+//     Users.findOneAndUpdate(
+//         {Username: req.params.Username},
+//         {$push:{FavouriteMovies:req.params.MovieId},},
+//         {new:true},
+//         (err,updatedUser) => {
+//             if (err) {
+//                 console.error(error);
+//                 res.status(500).send('Error' + error);
+//             } else {
+//                 res.json(updatedUser);
+//             }
+//         }
 
-    )
+//     )
+// });
+
+app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+    const { Username, MovieID } = req.params;
+    Users.findOneAndUpdate({ Username: Username }, {
+        $push: { FavoriteMovies: MovieID }
+    }, { new: true })
+        .then((updatedUser) => res.status(201).json(updatedUser))
+        .catch((err) => {
+            console.log(err);
+            res.status(500).send(`Error: ${err}`);
+        });
 });
 
 // add a new movie
@@ -328,20 +340,31 @@ app.delete('/users/:Username',passport.authenticate('jwt', {session:false}), (re
 
 // Deleting a favourite movie from a user's list of favourites
 
-app.delete('/users/:Username/movies/:MovieID',passport.authenticate('jwt', {session:false}), (req,res) => {
-    Users.findOneAndUpdate({Username: req.params.Username},
-        {$pull:{FavouriteMovies: req.params.MovieID}},
-        {new:true},
-        (err, updatedUser) => {
-            if (err) {
-                console.error(err);
-                res.status(500).send('Error:' + err);
-            } else {
-                res.json (updatedUser);
-            }
+// app.delete('/users/:Username/movies/:MovieID',passport.authenticate('jwt', {session:false}), (req,res) => {
+//     Users.findOneAndUpdate({Username: req.params.Username},
+//         {$pull:{FavouriteMovies: req.params.MovieID}},
+//         {new:true},
+//         (err, updatedUser) => {
+//             if (err) {
+//                 console.error(err);
+//                 res.status(500).send('Error:' + err);
+//             } else {
+//                 res.json (updatedUser);
+//             }
+//         });
+// });
+
+app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+    const { Username, MovieID } = req.params;
+    Users.findOneAndUpdate({ Username: Username }, {
+        $pull: { FavoriteMovies: MovieID }
+    }, { new: true })
+        .then((updatedUser) => res.status(201).json(updatedUser))
+        .catch((err) => {
+            console.log(err);
+            res.status(500).send(`Error: ${err}`);
         });
 });
-
 
 
 
