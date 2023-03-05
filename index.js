@@ -30,8 +30,8 @@ require('./passport');
 
 
  //mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
-//mongoose.connect('mongodb+srv://MyFlixAdmin:Atlas5@cluster0.rwvyriz.mongodb.net/myFlixDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb+srv://MyFlixAdmin:Atlas5@cluster0.rwvyriz.mongodb.net/myFlixDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 // GET/READ request in mongoose
 app.get('/', (req,res) => {
@@ -183,8 +183,8 @@ app.post('/users',
 app.post('/users/:Username/movies/:MovieId', passport.authenticate('jwt', {session:false}),(req,res) => {
     Users.findOneAndUpdate(
         {Username: req.params.Username},
-        {$push:{FavouriteMovies:req.params.MovieId},},
-        {new:true},
+        {$addToSet:{FavouriteMovies:req.params.MovieId}},
+        // {new:true},
         (err,updatedUser) => {
             if (err) {
                 console.error(error);
