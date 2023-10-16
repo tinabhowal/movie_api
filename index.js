@@ -475,7 +475,8 @@ app.use((err, req, res, next) => {
 });
 
 
-const port = process.env.PORT || 5500;
+// const port = process.env.PORT || 5500;
+const port = 5500;
 app.listen(port, '0.0.0.0',() => {
  console.log('Listening on Port ' + port);
 });
