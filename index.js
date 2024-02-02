@@ -1,6 +1,9 @@
 
-require('dotenv').config();
-console.log(process.env);
+// require('dotenv').config();
+// console.log(process.env);
+
+const dotenv = require('dotenv');
+    dotenv.config({path:'config.env'});
 const express = require('express'),
       morgan = require('morgan'),
       bodyParser = require('body-parser'),
