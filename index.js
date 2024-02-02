@@ -1,5 +1,5 @@
 
-
+require('dotenv').config();
 const express = require('express'),
       morgan = require('morgan'),
       bodyParser = require('body-parser'),
@@ -29,9 +29,12 @@ require('./passport');
 
 
 
+
 //mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
- mongoose.connect('mongodb+srv://MyFlixAdmin:Atlas5@cluster0.rwvyriz.mongodb.net/myFlixDB?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
-// mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+ 
+ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+ // mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 
 
